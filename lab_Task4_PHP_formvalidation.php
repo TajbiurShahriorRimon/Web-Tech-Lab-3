@@ -26,16 +26,18 @@
     $day = "";
     $month = "";
     $year = "";
+    $bio = "";
     $has_error = false;
     if(isset($_POST['register'])) {
         if (empty($_POST['name'])) {
-            $err_name = "Name cannot br empty!";
+            $err_name = "Name cannot be empty!";
         }
         else{
             $name = htmlspecialchars($_POST['name']);
         }
         if (empty($_POST['username'])) {
             $err_username = "Username cannot be empty!";
+            $has_error = true;
         }
         if (!empty($_POST['username'])) {
             if(strlen($_POST['username']) < 6){
@@ -87,6 +89,21 @@
         if (empty($_POST['email'])) {
             $err_email = "Email cannot be empty!";
             $has_error = true;
+        }
+        else if (!empty($_POST['email'])){
+            if(strpos($_POST['email'], "@") && strpos($_POST['email'], ".")){
+                if(strpos($_POST['email'], "@")){
+                    if(strpos($_POST['email'], ".")){
+                        $email = htmlspecialchars($_POST['email']);
+                    }
+                    else{
+                        $err_email = "@ must be before (.)";
+                    }
+                }
+            }
+            else{
+                $err_email = "@ and (.) must be included";
+            }
         }
         if (empty($_POST['code'])) {
             $err_code = "Code cannot be empty!";
@@ -152,6 +169,7 @@
         }
         if (empty($_POST['state'])) {
             $err_state= "State cannot be empty!";
+            $has_error = true;
         }
         else{
             if(ctype_space("  ")){
@@ -160,6 +178,7 @@
         }
         if (empty($_POST['postal'])) {
             $err_postal= "Postal cannot be empty!";
+            $has_error = true;
         }
         else{
             if(ctype_space("  ")){
@@ -184,17 +203,18 @@
             $has_error = true;
         }
         if(!isset($_POST['about'])){
-            $err_about = "At least on check is required";
+            $err_about = "At least one check is required";
             $has_error = true;
         }
         if (empty($_POST['bio'])) {
-            $err_bio = "Bio is reuired";
+            $err_bio = "Bio is required";
             $has_error = true;
         }
-        if (!empty($_POST['bio'])){
-            if(ctype_space("  ")){
-                $err_bio = "Multiple spaces is not allowed in a sequence";
-            }
+        else if (!empty($_POST['bio'])){
+            $bio = htmlspecialchars($_POST['bio']);
+        }
+        else{
+
         }
     }
 ?>
