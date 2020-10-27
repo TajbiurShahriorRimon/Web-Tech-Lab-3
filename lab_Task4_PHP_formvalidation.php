@@ -101,15 +101,15 @@
                             </td>
                         </tr>
                         <tr>
-                            <td valign="right" align="right">
+                            <td align="right">
                                 Bio:
                             </td>
                             <td>
-                                <textarea name="bio">
+                                <textarea name="bio"></textarea>
                             </td>
                         </tr>
-                        <tr>
-                            <td colspan="2"><input type="submit">register</td>
+                        <tr align="center">
+                            <td colspan="2"><input type="submit" value="register"></td>
                         </tr>
                     </table>
                 </form>
