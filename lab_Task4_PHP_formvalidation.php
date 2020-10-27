@@ -22,10 +22,15 @@
     $gender = "";
     $number = "";
     $code = "";
+    $address = "";
+    $state = "";
+    $postal = "";
+    $city = "";
     $about = "";
     $day = "";
     $month = "";
     $year = "";
+    $gender = "";
     $bio = "";
     $has_error = false;
     if(isset($_POST['register'])) {
@@ -61,19 +66,15 @@
                 $err_pass= "Password cannot be less than 8 letter";
                 $has_error = true;
             }
-            else if(!strpos($_POST['pass'], "#")) {
+            if(!strpos($_POST['pass'], "#") || !strpos($_POST['pass'], "?")) {
                 $err_pass= "Password must have a special character";
                 $has_error = true;
             }
-            else if(!strpos($_POST['pass'], "?")) {
-                $err_pass= "Password must have a special character";
-                $has_error = true;
-            }
-            else if(!ctype_upper($_POST['pass'])){
+            if(strtoupper($_POST['pass']) == $_POST['pass']){
                 $err_pass= "Password must have a Upper character";
                 $has_error = true;
             }
-            else if(!ctype_lower($_POST['pass'])){
+            if(strtolower($_POST['pass']) == $_POST['pass']){
                 $err_pass= "Password must have a Lower character";
                 $has_error = true;
             }
@@ -85,7 +86,6 @@
             $err_confPass ="Confirm Password cannot be empty!";
             $has_error = true;
         }
-
         if (empty($_POST['email'])) {
             $err_email = "Email cannot be empty!";
             $has_error = true;
@@ -136,54 +136,28 @@
             $has_error = true;
         }
         else{
-            if(ctype_space($_POST['state'])){
-                $err_state= "Multiple spaces in state is not allowed in a sequence";
-            }
+            $state = htmlspecialchars($_POST['state']);
         }
         if (empty($_POST['postal'])) {
             $err_postal= "Postal cannot be empty!";
             $has_error = true;
         }
         else{
-            if(ctype_space("  ")){
-                $err_postal= "Multiple spaces is not allowed in a sequence";
-            }
+            $postal = htmlspecialchars($_POST['postal']);
         }
         if (empty($_POST['address'])) {
             $err_address= "Address cannot be empty!";
             $has_error = true;
         }
         else{
-            if(ctype_space("  ")){
-                $err_address= "Multiple spaces is not allowed in a sequence";
-            }
+            $address = htmlspecialchars($_POST['address']);
         }
         if (empty($_POST['city'])) {
             $err_city= "City cannot be empty!";
             $has_error = true;
         }
         else{
-            if(ctype_space("  ")){
-                $err_city= "Multiple spaces is not allowed in a sequence";
-            }
-        }
-        if (empty($_POST['state'])) {
-            $err_state= "State cannot be empty!";
-            $has_error = true;
-        }
-        else{
-            if(ctype_space("  ")){
-                $err_state= "Multiple spaces is not allowed in a sequence";
-            }
-        }
-        if (empty($_POST['postal'])) {
-            $err_postal= "Postal cannot be empty!";
-            $has_error = true;
-        }
-        else{
-            if(ctype_space("  ")){
-                $err_postal= "Multiple spaces is not allowed in a sequence";
-            }
+            $city = htmlspecialchars($_POST['city']);
         }
         if(isset($_POST["day"])){
             $day=htmlspecialchars($_POST["day"]);
@@ -213,8 +187,12 @@
         else if (!empty($_POST['bio'])){
             $bio = htmlspecialchars($_POST['bio']);
         }
-        else{
-
+        if(!$has_error){
+            $dob = $day."-".$month."-".$year;
+            echo "<p>sefd</p>";
+            echo $name."br/".$username."br/". $email."br/". $password."br/". $dob."br/". $gender."br/";
+            echo $gender."br/". $address.", ". $city.",". $state, ", ".$postal."br/";
+            echo $code."-".$number."br/";
         }
     }
 ?>
