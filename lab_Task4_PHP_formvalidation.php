@@ -20,12 +20,13 @@
     $confPassword = "";
     $email = "";
     $gender = "";
+    $number = "";
+    $code = "";
     $about = "";
     $day = "";
     $month = "";
     $year = "";
     $has_error = false;
-    //$password = $_POST['pass'];
     if(isset($_POST['register'])) {
         if (empty($_POST['name'])) {
             $err_name = "Name cannot br empty!";
@@ -41,9 +42,12 @@
                 $err_username = "Username cannot be less than 6 letter";
                 $has_error = true;
             }
-            if(strpos(""," ")){
+            else if(strpos($_POST['username']," ")){
                 $err_username = "Spaces is not allowed in a sequence";
                 $has_error = true;
+            }
+            else{
+                $username = htmlspecialchars($_POST['username']);
             }
         }
         if (empty($_POST['pass'])) {
@@ -65,6 +69,7 @@
             }
             else if(!ctype_upper($_POST['pass'])){
                 $err_pass= "Password must have a Upper character";
+                $has_error = true;
             }
             else if(!ctype_lower($_POST['pass'])){
                 $err_pass= "Password must have a Lower character";
@@ -81,33 +86,46 @@
 
         if (empty($_POST['email'])) {
             $err_email = "Email cannot be empty!";
+            $has_error = true;
         }
         if (empty($_POST['code'])) {
             $err_code = "Code cannot be empty!";
+            $has_error = true;
         }
         if (!empty($_POST['code'])){
             if(!is_numeric($_POST['code'])){
-                $err_num = "Code must be numeric.";
+                $err_code = "Code must be numeric.";
+                $has_error = true;
+            }
+            else{
+                $code = htmlspecialchars($_POST['code']);
             }
         }
         if (empty($_POST['number'])) {
             $err_num= "Number cannot be empty!";
+            $has_error = true;
         }
         if (!empty($_POST['number'])){
-            if(!is_numeric($_POST['code'])){
-                $err_code = "Phone number must be numeric.";
+            if(!is_numeric($_POST['number'])){
+                $err_num = "Phone number must be numeric.";
+                $has_error = true;
+            }
+            else{
+                $number = htmlspecialchars($_POST['number']);
             }
         }
         if (empty($_POST['state'])) {
             $err_state= "State cannot be empty!";
+            $has_error = true;
         }
         else{
-            if(ctype_space("  ")){
-                $err_state= "Multiple spaces is not allowed in a sequence";
+            if(ctype_space($_POST['state'])){
+                $err_state= "Multiple spaces in state is not allowed in a sequence";
             }
         }
         if (empty($_POST['postal'])) {
             $err_postal= "Postal cannot be empty!";
+            $has_error = true;
         }
         else{
             if(ctype_space("  ")){
@@ -116,6 +134,7 @@
         }
         if (empty($_POST['address'])) {
             $err_address= "Address cannot be empty!";
+            $has_error = true;
         }
         else{
             if(ctype_space("  ")){
@@ -124,6 +143,7 @@
         }
         if (empty($_POST['city'])) {
             $err_city= "City cannot be empty!";
+            $has_error = true;
         }
         else{
             if(ctype_space("  ")){
@@ -147,26 +167,29 @@
             }
         }
         if(isset($_POST["day"])){
-            $day=htmlspecialchars($_POST["dobDay"]);
+            $day=htmlspecialchars($_POST["day"]);
         }
         elseif(isset($_POST["month"])){
-            $month=htmlspecialchars($_POST["dobMonth"]);
+            $month=htmlspecialchars($_POST["month"]);
         }
         elseif(isset($_POST["year"])){
-            $year=htmlspecialchars($_POST["dobYear"]);
+            $year=htmlspecialchars($_POST["year"]);
         }
         else{
             $err_dob = "Select your DOB";
+            $has_error = true;
         }
         if(!isset($_POST['gender'])){
             $err_gender = "Gender required";
+            $has_error = true;
         }
         if(!isset($_POST['about'])){
             $err_about = "At least on check is required";
-
+            $has_error = true;
         }
         if (empty($_POST['bio'])) {
             $err_bio = "Bio is reuired";
+            $has_error = true;
         }
         if (!empty($_POST['bio'])){
             if(ctype_space("  ")){
@@ -323,7 +346,7 @@
                                 Where did you hear<br/> about us
                             </td>
                             <td>
-                                <input type="checkbox" name="about" value="1"> A find or Colleague<br/>
+                                <input type="checkbox" name="about" value="1"> A friend or Colleague<br/>
                                 <input type="checkbox" name="about" value="2"> Google<br/>
                                 <input type="checkbox" name="about" value="3"> Blog Post<br/>
                                 <input type="checkbox" name="about" value="4"> New Article<br/>
