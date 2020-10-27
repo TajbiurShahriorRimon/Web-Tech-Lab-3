@@ -1,5 +1,5 @@
 <?php
-    echo "sfda";
+    
 ?>
 <html>
     <head>
@@ -9,7 +9,7 @@
             <legend>
                 <h1>Club Member Registration</h1>
             </legend>
-                <form action="">
+                <form action="" method="post">
                     <table>
                         <tr>
                         <td align="right">Name:</td>
