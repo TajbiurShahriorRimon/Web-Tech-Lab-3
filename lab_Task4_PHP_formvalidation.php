@@ -162,11 +162,11 @@
             $err_gender = "Gender required";
         }
         if(!isset($_POST['about'])){
-            $err_gender = "At least on check is required";
+            $err_about = "At least on check is required";
 
         }
         if (empty($_POST['bio'])) {
-            $err_bio = "def";
+            $err_bio = "Bio is reuired";
         }
         if (!empty($_POST['bio'])){
             if(ctype_space("  ")){
