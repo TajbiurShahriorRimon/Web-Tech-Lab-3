@@ -66,16 +66,22 @@
                 $err_pass= "Password cannot be less than 8 letter";
                 $has_error = true;
             }
-            if(!strpos($_POST['pass'], "#") || !strpos($_POST['pass'], "?")) {
+            if(!strpos($_POST['pass'], "#") && !strpos($_POST['pass'], "?")) {
                 $err_pass= "Password must have a special character";
                 $has_error = true;
             }
+            if(!strpos($_POST['pass'], "1") && !strpos($_POST['pass'], "2") && !strpos($_POST['pass'], "3") && !strpos($_POST['pass'], "4")
+                && !strpos($_POST['pass'], "5") && !strpos($_POST['pass'], "6") && !strpos($_POST['pass'], "7") && !strpos($_POST['pass'], "8")
+                    && !strpos($_POST['pass'], "9") && !strpos($_POST['pass'], "0")){
+                $err_pass= "Password must have a number";
+                $has_error = true;
+            }
             if(strtoupper($_POST['pass']) == $_POST['pass']){
-                $err_pass= "Password must have a Upper character";
+                $err_pass= "Password must have a Lower character";
                 $has_error = true;
             }
             if(strtolower($_POST['pass']) == $_POST['pass']){
-                $err_pass= "Password must have a Lower character";
+                $err_pass= "Password must have a Upper character";
                 $has_error = true;
             }
             else{
@@ -91,18 +97,18 @@
             $has_error = true;
         }
         else if (!empty($_POST['email'])){
-            if(strpos($_POST['email'], "@") && strpos($_POST['email'], ".")){
-                if(strpos($_POST['email'], "@")){
-                    if(strpos($_POST['email'], ".")){
-                        $email = htmlspecialchars($_POST['email']);
-                    }
-                    else{
-                        $err_email = "@ must be before (.)";
-                    }
+            if(strpos($_POST['email'], ".") && strpos($_POST['email'], "@")){
+                if(strpos($_POST['email'], ".") > strpos($_POST['email'], "@")){
+                    $email = htmlspecialchars($_POST['email']);
+                }
+                else{
+                    $err_email = "@ must be before (.)";
+                    $has_error = true;
                 }
             }
             else{
                 $err_email = "@ and (.) must be included";
+                $has_error = true;
             }
         }
         if (empty($_POST['code'])) {
@@ -159,24 +165,26 @@
         else{
             $city = htmlspecialchars($_POST['city']);
         }
-        if(isset($_POST["day"])){
+        if(isset($_POST["day"]) && isset($_POST["month"]) && isset($_POST["year"])){
             $day=htmlspecialchars($_POST["day"]);
-        }
-        elseif(isset($_POST["month"])){
             $month=htmlspecialchars($_POST["month"]);
-        }
-        elseif(isset($_POST["year"])){
             $year=htmlspecialchars($_POST["year"]);
         }
         else{
             $err_dob = "Select your DOB";
             $has_error = true;
         }
-        if(!isset($_POST['gender'])){
+        if(isset($_POST['gender'])){
+            $gender = $_POST['gender'];
+        }
+        else{
             $err_gender = "Gender required";
             $has_error = true;
         }
-        if(!isset($_POST['about'])){
+        if(isset($_POST['about'])){
+            $about = $_POST['about'];
+        }
+        else if(!isset($_POST['about'])){
             $err_about = "At least one check is required";
             $has_error = true;
         }
@@ -188,11 +196,12 @@
             $bio = htmlspecialchars($_POST['bio']);
         }
         if(!$has_error){
-            $dob = $day."-".$month."-".$year;
-            echo "<p>sefd</p>";
-            echo $name."br/".$username."br/". $email."br/". $password."br/". $dob."br/". $gender."br/";
-            echo $gender."br/". $address.", ". $city.",". $state, ", ".$postal."br/";
-            echo $code."-".$number."br/";
+            echo $name."<br>".$username."<br>".$email."<br>". $password."<br>". $day."-". $month."-". $year."<br>";
+            echo "Gender: ".$gender."<br>". $address.", ". $city.",". $state, ", ".$postal."<br>";
+            echo $code."-".$number."<br>". $bio."<br>";
+            foreach ($_POST['about'] as $aboutCheck){
+                echo $aboutCheck."<br>";
+            }
         }
     }
 ?>
@@ -310,7 +319,7 @@
                                     <?php
                                     $month = array("Jan", "Feb","March","April", "May", "June", "July", "Aug", "Sep", "Oct", "Nov", "Dec");
                                     for($i = 0; $i <= 11; $i++){
-                                        echo "<option value=" . $i . ">" . $month[$i] . "</option>";
+                                        echo "<option value=" . $month[$i] . ">" . $month[$i] . "</option>";
                                     }
                                     ?>
 
@@ -344,10 +353,10 @@
                                 Where did you hear<br/> about us
                             </td>
                             <td>
-                                <input type="checkbox" name="about" value="1"> A friend or Colleague<br/>
-                                <input type="checkbox" name="about" value="2"> Google<br/>
-                                <input type="checkbox" name="about" value="3"> Blog Post<br/>
-                                <input type="checkbox" name="about" value="4"> New Article<br/>
+                                <input type="checkbox" name="about[]" value="A friend or Colleague"> A friend or Colleague<br/>
+                                <input type="checkbox" name="about[]" value="Google"> Google<br/>
+                                <input type="checkbox" name="about[]" value="Blog Post"> Blog Post<br/>
+                                <input type="checkbox" name="about[]" value="New Article"> New Article<br/>
                                 <?php
                                 echo $err_about;
                                 ?>
